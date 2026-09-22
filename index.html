@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conheça nossa turma — PPI INFO3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EFF2EC;
+    --panel: #FBFAF6;
+    --ink: #1B2B25;
+    --ink-soft: #4E5C55;
+    --line: #D6DACF;
+    --teal: #2F6F62;
+    --teal-soft: #E4EEEA;
+    --amber: #C98A2E;
+    --amber-soft: #F6EBD8;
+    --brick: #B14B31;
+    --brick-soft: #F5E2DB;
+    --radius: 3px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14201B; --panel: #1C2A24; --ink: #EDF1EC; --ink-soft: #A9B6AE;
+      --line: #33443B; --teal: #6FBBA6; --teal-soft: #223531; --amber: #E3AC5C;
+      --amber-soft: #2E2718; --brick: #E0846A; --brick-soft: #33221C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14201B; --panel: #1C2A24; --ink: #EDF1EC; --ink-soft: #A9B6AE;
+    --line: #33443B; --teal: #6FBBA6; --teal-soft: #223531; --amber: #E3AC5C;
+    --amber-soft: #2E2718; --brick: #E0846A; --brick-soft: #33221C;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .num, .stat-value, .hero-num { font-family: 'Fraunces', Georgia, serif; }
+
+  .shell { display: flex; min-height: 100%; }
+
+  /* ---- rail nav (ruler motif) ---- */
+  .rail {
+    width: 220px; flex: none; background: var(--panel);
+    border-right: 1px solid var(--line);
+    padding: 28px 0 28px 0;
+    display: flex; flex-direction: column; gap: 4px;
+    position: sticky; top: 0; align-self: flex-start; height: 100vh;
+  }
+  .rail-brand {
+    padding: 0 22px 22px 22px; margin-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  .rail-brand .k { font-size: 12px; color: var(--ink-soft); letter-spacing: .02em; }
+  .rail-brand .v { font-size: 17px; font-weight: 600; margin-top: 2px; }
+  .tab-btn {
+    all: unset; cursor: pointer; padding: 13px 22px 13px 18px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14.5px; color: var(--ink-soft);
+    border-left: 3px solid transparent;
+    position: relative;
+  }
+  .tab-btn .tick { width: 10px; height: 1px; background: var(--line); flex: none; }
+  .tab-btn.active { color: var(--ink); border-left-color: var(--teal); background: var(--teal-soft); font-weight: 500; }
+  .tab-btn.active .tick { background: var(--teal); width: 16px; }
+  .tab-btn:hover:not(.active) { background: rgba(0,0,0,.025); }
+  .rail-foot { margin-top: auto; padding: 16px 22px 0 22px; font-size: 11.5px; color: var(--ink-soft); line-height: 1.5; border-top: 1px solid var(--line); }
+
+  .main { flex: 1; min-width: 0; padding: 44px 48px 80px; max-width: 980px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  h1.hero-title { font-size: 27px; font-weight: 500; margin: 0 0 6px; letter-spacing: -.01em; }
+  p.hero-sub { color: var(--ink-soft); font-size: 15px; margin: 0 0 30px; max-width: 62ch; line-height: 1.55; }
+
+  .hero-row { display: flex; align-items: baseline; gap: 18px; margin-bottom: 34px; flex-wrap: wrap; }
+  .hero-num { font-size: 64px; font-weight: 500; line-height: 1; color: var(--teal); }
+  .hero-num-label { font-size: 14.5px; color: var(--ink-soft); max-width: 30ch; line-height: 1.45; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; margin-bottom: 8px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--accent, var(--teal));
+    border-radius: var(--radius); padding: 16px 16px 15px;
+  }
+  .card .stat-value { font-size: 27px; font-weight: 500; }
+  .card .stat-unit { font-size: 13px; color: var(--ink-soft); margin-left: 3px; }
+  .card .stat-label { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; }
+  .card .stat-sub { font-size: 11px; color: var(--ink-soft); margin-top: 6px; opacity: .8; }
+
+  .section { margin-top: 40px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+  .section h2 { font-size: 16.5px; font-weight: 600; margin: 0; }
+  .section .note { font-size: 12.5px; color: var(--ink-soft); }
+  .explain { font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; max-width: 68ch; margin: 8px 0 18px; }
+  .draft-flag { font-size: 11px; color: var(--amber); border: 1px dashed var(--amber); display: inline-block; padding: 1px 7px; border-radius: 20px; margin-left: 8px; vertical-align: middle; }
+
+  .chart-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px 16px; }
+  .bar-row { display: grid; grid-template-columns: 118px 1fr 46px; align-items: center; gap: 10px; font-size: 13px; padding: 6px 0; }
+  .bar-row .lbl { color: var(--ink-soft); }
+  .bar-track { height: 9px; background: var(--line); border-radius: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; background: var(--teal); }
+  .bar-row .val { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+  table.stat-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.stat-table th, table.stat-table td { text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  table.stat-table th:first-child, table.stat-table td:first-child { text-align: left; font-variant-numeric: initial; }
+  table.stat-table th { color: var(--ink-soft); font-weight: 500; font-size: 12px; }
+
+  .privacy-box {
+    background: var(--teal-soft); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px; font-size: 13px; color: var(--ink); line-height: 1.6; margin-bottom: 26px;
+  }
+  .privacy-box b { color: var(--teal); }
+
+  /* ---- form ---- */
+  form.visit-form { max-width: 440px; }
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 13px; color: var(--ink-soft); margin-bottom: 6px; }
+  .field input, .field select {
+    width: 100%; font: inherit; font-size: 15px; padding: 11px 12px;
+    border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); color: var(--ink);
+  }
+  .field input:focus, .field select:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .seg { display: flex; gap: 8px; }
+  .seg button {
+    flex: 1; padding: 11px 10px; border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+    border-radius: var(--radius); font: inherit; font-size: 14px; cursor: pointer;
+  }
+  .seg button.sel { border-color: var(--teal); background: var(--teal-soft); color: var(--teal); font-weight: 500; }
+  .submit-btn {
+    margin-top: 6px; padding: 13px 22px; background: var(--teal); color: #fff; border: none;
+    border-radius: var(--radius); font: inherit; font-size: 14.5px; font-weight: 500; cursor: pointer;
+  }
+  .submit-btn:disabled { opacity: .45; cursor: not-allowed; }
+  .form-msg { font-size: 12.5px; color: var(--brick); min-height: 16px; margin-top: 10px; }
+
+  /* ---- results ---- */
+  .result-chip-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+  .chip { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 8px 16px; font-size: 13px; }
+  .chip b { font-family: 'Fraunces', serif; font-weight: 500; margin-left: 4px; }
+
+  .gauge-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px 18px; margin-bottom: 10px; }
+  .gauge-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+  .gauge-imc { font-size: 40px; font-weight: 500; }
+  .gauge-class { font-size: 14px; font-weight: 500; padding: 4px 12px; border-radius: 20px; }
+  .gauge-band { position: relative; height: 14px; border-radius: 7px; overflow: hidden; display: flex; margin-bottom: 6px; }
+  .gauge-band > div { height: 100%; }
+  .gauge-marker { position: relative; height: 18px; }
+  .gauge-marker .tri { position: absolute; top: 0; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--ink); transform: translateX(-6px); }
+  .gauge-scale { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--ink-soft); margin-top: 2px; }
+
+  .empty-state { background: var(--panel); border: 1px dashed var(--line); border-radius: var(--radius); padding: 40px 24px; text-align: center; color: var(--ink-soft); font-size: 14px; }
+  .empty-state a { color: var(--teal); cursor: pointer; text-decoration: underline; }
+
+  .cmp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; }
+  .cmp-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+  .cmp-card .cmp-label { font-size: 12px; color: var(--ink-soft); margin-bottom: 8px; }
+  .cmp-bars { display: flex; flex-direction: column; gap: 6px; }
+  .cmp-line { display: grid; grid-template-columns: 46px 1fr 44px; gap: 8px; align-items: center; font-size: 11.5px; }
+  .cmp-track { height: 8px; background: var(--line); border-radius: 5px; overflow: hidden; }
+  .cmp-fill { height: 100%; border-radius: 5px; }
+
+  .visitor-panel { margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); }
+  .visitor-stats { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; }
+  .visitor-stats .vs { font-size: 13px; color: var(--ink-soft); }
+  .visitor-stats .vs b { font-family: 'Fraunces', serif; font-size: 20px; color: var(--ink); font-weight: 500; }
+  .link-btn { all: unset; cursor: pointer; font-size: 12px; color: var(--brick); text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .shell { flex-direction: column; }
+    .rail { width: 100%; height: auto; position: sticky; top: 0; flex-direction: row; padding: 10px 8px; overflow-x: auto; z-index: 5; padding-top: calc(10px + env(safe-area-inset-top, 0px)); }
+    .rail-brand, .rail-foot { display: none; }
+    .tab-btn { padding: 10px 14px; border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+    .tab-btn.active { border-left: none; border-bottom-color: var(--teal); }
+    .tab-btn .tick { display: none; }
+    .main { padding: 26px 20px 60px; }
+    .hero-num { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="rail">
+    <div class="rail-brand">
+      <div class="k">PPI · INFO3</div>
+      <div class="v">Perfil antropométrico da turma</div>
+    </div>
+    <button class="tab-btn active" data-tab="turma"><span class="tick"></span>Conheça nossa turma</button>
+    <button class="tab-btn" data-tab="form"><span class="tick"></span>Vamos descobrir seus dados?</button>
+    <button class="tab-btn" data-tab="result"><span class="tick"></span>Seus resultados</button>
+    <div class="rail-foot">Nenhum dado pessoal é armazenado em servidor. Tudo é calculado no seu navegador.</div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ============ PÁGINA 1 — TURMA ============ -->
+    <section class="page active" id="page-turma">
+      <h1 class="hero-title">Conheça nossa turma</h1>
+      <p class="hero-sub">Um retrato coletivo e anônimo de quem participou desta pesquisa — nenhuma resposta aqui pode ser rastreada até um estudante específico.</p>
+
+      <div class="hero-row">
+        <div class="hero-num" id="t-n">—</div>
+        <div class="hero-num-label">estudantes participaram da coleta de dados, com idades entre <span id="t-idade-range">—</span> anos.</div>
+      </div>
+
+      <div class="cards" id="t-cards"></div>
+
+      <div class="section">
+        <div class="section-head"><h2>Como a turma se distribui por IMC</h2><span class="note">classificação OMS (adulto)</span></div>
+        <p class="explain">O Índice de Massa Corporal (IMC) relaciona peso e altura (peso ÷ altura²) e é usado como uma triagem populacional rápida — não é um diagnóstico individual, mas ajuda a enxergar tendências de um grupo. <span class="draft-flag">rascunho — reescrever com a própria turma</span></p>
+        <div class="chart-wrap"><div id="t-imc-chart"></div></div>
+      </div>
+
+      <div class="section two-col">
+        <div>
+          <div class="section-head"><h2>Altura</h2></div>
+          <div class="chart-wrap"><div id="t-altura-chart"></div></div>
+        </div>
+        <div>
+          <div class="section-head"><h2>Peso</h2></div>
+          <div class="chart-wrap"><div id="t-peso-chart"></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>Indicadores estatísticos</h2><span class="note">média · mediana · desvio-padrão</span></div>
+        <p class="explain">A média mostra o valor típico do grupo; a mediana é o valor central (menos sensível a casos extremos); o desvio-padrão mostra o quanto os valores variam ao redor da média. <span class="draft-flag">rascunho</span></p>
+        <div class="chart-wrap"><table class="stat-table" id="t-stat-table"></table></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>Taxa Metabólica Basal (TMB)</h2></div>
+        <p class="explain">A TMB estima quantas calorias o corpo gastaria em repouso completo, apenas para manter funções vitais. Calculamos pela fórmula de Mifflin-St Jeor, a partir de peso, altura, idade e sexo. <span class="draft-flag">rascunho</span></p>
+        <div class="cards" id="t-tmb-cards"></div>
+      </div>
+    </section>
+
+    <!-- ============ PÁGINA 2 — FORMULÁRIO ============ -->
+    <section class="page" id="page-form">
+      <h1 class="hero-title">Vamos descobrir seus dados?</h1>
+      <p class="hero-sub">Informe os dados medidos pela equipe da PPI para ver seu IMC e sua Taxa Metabólica Basal na próxima aba.</p>
+
+      <div class="privacy-box">
+        <b>Privacidade:</b> seus dados ficam só neste navegador, nesta máquina — não enviamos nada para nenhum servidor. Ao sair desta tela ou apertar "limpar", os dados são apagados. O único registro opcional é um resumo estatístico anônimo (sem nome, sem data de nascimento) usado só para o gráfico "visitantes de hoje" na próxima aba.
+      </div>
+
+      <form class="visit-form" id="visit-form">
+        <div class="field">
+          <label for="f-nasc">Data de nascimento</label>
+          <input type="date" id="f-nasc" required>
+        </div>
+        <div class="field">
+          <label for="f-altura">Altura (cm)</label>
+          <input type="number" id="f-altura" min="80" max="230" step="0.1" placeholder="ex.: 170" required>
+        </div>
+        <div class="field">
+          <label for="f-peso">Peso (kg)</label>
+          <input type="number" id="f-peso" min="20" max="300" step="0.1" placeholder="ex.: 65" required>
+        </div>
+        <div class="field">
+          <label>Sexo</label>
+          <div class="seg" id="f-sexo">
+            <button type="button" data-v="M">Masculino</button>
+            <button type="button" data-v="F">Feminino</button>
+          </div>
+        </div>
+        <button class="submit-btn" type="submit">Calcular meus resultados</button>
+        <div class="form-msg" id="f-msg"></div>
+      </form>
+    </section>
+
+    <!-- ============ PÁGINA 3 — RESULTADOS ============ -->
+    <section class="page" id="page-result">
+      <h1 class="hero-title">Seus resultados</h1>
+      <p class="hero-sub" id="r-sub">Preencha a aba anterior para ver seus resultados aqui.</p>
+
+      <div id="r-empty" class="empty-state">Nenhum dado informado ainda. <a id="r-goto-form">Ir para o formulário →</a></div>
+
+      <div id="r-content" style="display:none">
+        <div class="result-chip-row">
+          <div class="chip">Idade<b id="r-idade"></b></div>
+          <div class="chip">Altura<b id="r-altura"></b></div>
+          <div class="chip">Peso<b id="r-peso"></b></div>
+        </div>
+
+        <div class="gauge-wrap">
+          <div class="gauge-top">
+            <div><div class="num gauge-imc" id="r-imc"></div><div class="note" style="color:var(--ink-soft)">Índice de Massa Corporal</div></div>
+            <div class="gauge-class" id="r-imc-class"></div>
+          </div>
+          <div class="gauge-band" id="r-band"></div>
+          <div class="gauge-marker" id="r-marker"></div>
+          <div class="gauge-scale"><span>14</span><span>18,5</span><span>25</span><span>30</span><span>35</span><span>40+</span></div>
+        </div>
+
+        <div class="cards" style="margin-top:14px">
+          <div class="card" style="--accent:var(--amber)">
+            <span class="num stat-value" id="r-tmb"></span><span class="stat-unit">kcal/dia</span>
+            <div class="stat-label">Taxa Metabólica Basal</div>
+            <div class="stat-sub">Mifflin-St Jeor</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h2>Você em relação à turma</h2><span class="note">comparação por médias, sem dados individuais</span></div>
+          <div class="cmp-grid" id="r-cmp"></div>
+        </div>
+
+        <div class="visitor-panel">
+          <div class="section-head"><h2>Visitantes de hoje neste computador</h2></div>
+          <p class="explain">Contador local — some ao limpar os dados deste navegador. Nenhum nome é salvo, apenas os números calculados.</p>
+          <div class="visitor-stats" id="r-visitor-stats"></div>
+          <div style="margin-top:12px"><button class="link-btn" id="r-clear">Limpar dados deste navegador</button></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- embedded, pre-cleaned, anonymized class data ---------- */
+  /* Nenhum nome, e-mail, data de nascimento exata ou carimbo de data/hora foi mantido. */
+  var TURMA = [
+    {"idade":18,"altura":174.0,"peso":68.0,"genero":"M","imc":22.46,"tmb":1682},
+    {"idade":17,"altura":160.0,"peso":54.0,"genero":"F","imc":21.09,"tmb":1294},
+    {"idade":17,"altura":156.0,"peso":55.9,"genero":"F","imc":22.97,"tmb":1288},
+    {"idade":18,"altura":152.0,"peso":56.0,"genero":"F","imc":24.24,"tmb":1259},
+    {"idade":18,"altura":175.0,"peso":62.7,"genero":"M","imc":20.47,"tmb":1636},
+    {"idade":18,"altura":177.0,"peso":57.0,"genero":"M","imc":18.19,"tmb":1591},
+    {"idade":17,"altura":174.5,"peso":63.9,"genero":"M","imc":20.99,"tmb":1650},
+    {"idade":17,"altura":165.5,"peso":63.1,"genero":"M","imc":23.04,"tmb":1585},
+    {"idade":18,"altura":170.0,"peso":70.0,"genero":"M","imc":24.22,"tmb":1678},
+    {"idade":17,"altura":171.0,"peso":62.2,"genero":"M","imc":21.27,"tmb":1611},
+    {"idade":17,"altura":170.0,"peso":50.0,"genero":"F","imc":17.3,"tmb":1316},
+    {"idade":17,"altura":169.0,"peso":50.0,"genero":"M","imc":17.51,"tmb":1476},
+    {"idade":18,"altura":181.0,"peso":76.0,"genero":"M","imc":23.2,"tmb":1806},
+    {"idade":17,"altura":177.0,"peso":64.7,"genero":"M","imc":20.65,"tmb":1673},
+    {"idade":18,"altura":163.0,"peso":54.1,"genero":"F","imc":20.36,"tmb":1309},
+    {"idade":17,"altura":168.0,"peso":55.1,"genero":"M","imc":19.52,"tmb":1521},
+    {"idade":18,"altura":176.0,"peso":88.0,"genero":"M","imc":28.41,"tmb":1895},
+    {"idade":17,"altura":166.0,"peso":83.6,"genero":"M","imc":30.34,"tmb":1794},
+    {"idade":17,"altura":171.0,"peso":65.0,"genero":"M","imc":22.23,"tmb":1639},
+    {"idade":17,"altura":170.0,"peso":88.5,"genero":"M","imc":30.62,"tmb":1868},
+    {"idade":18,"altura":170.0,"peso":78.0,"genero":"F","imc":26.99,"tmb":1592},
+    {"idade":18,"altura":170.0,"peso":55.0,"genero":"M","imc":19.03,"tmb":1528},
+    {"idade":18,"altura":180.0,"peso":72.0,"genero":"M","imc":22.22,"tmb":1760},
+    {"idade":17,"altura":170.0,"peso":58.2,"genero":"M","imc":20.14,"tmb":1564},
+    {"idade":17,"altura":170.0,"peso":54.0,"genero":"M","imc":18.69,"tmb":1522},
+    {"idade":18,"altura":175.0,"peso":60.0,"genero":"M","imc":19.59,"tmb":1609},
+    {"idade":17,"altura":166.0,"peso":48.0,"genero":"F","imc":17.42,"tmb":1272}
+  ];
+
+  var IMC_BANDS = [
+    {max:18.5, label:"Abaixo do peso", color:"var(--amber)"},
+    {max:25,   label:"Peso normal",    color:"var(--teal)"},
+    {max:30,   label:"Sobrepeso",      color:"var(--amber)"},
+    {max:35,   label:"Obesidade I",    color:"var(--brick)"},
+    {max:40,   label:"Obesidade II",   color:"var(--brick)"},
+    {max:Infinity, label:"Obesidade III", color:"var(--brick)"}
+  ];
+  function classifyIMC(v){ for(var i=0;i<IMC_BANDS.length;i++){ if(v < IMC_BANDS[i].max) return IMC_BANDS[i]; } return IMC_BANDS[IMC_BANDS.length-1]; }
+
+  function mean(a){ return a.reduce(function(s,v){return s+v;},0)/a.length; }
+  function median(a){ var s=a.slice().sort(function(x,y){return x-y;}); var m=Math.floor(s.length/2); return s.length%2? s[m] : (s[m-1]+s[m])/2; }
+  function stdev(a){ var m=mean(a); return Math.sqrt(mean(a.map(function(v){return (v-m)*(v-m);}))); }
+  function fmt(v,d){ d=d===undefined?1:d; return v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+
+  /* ---------- tabs ---------- */
+  var tabs = document.querySelectorAll('.tab-btn');
+  function showTab(name){
+    tabs.forEach(function(b){ b.classList.toggle('active', b.dataset.tab===name); });
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+    document.getElementById('page-'+name).classList.add('active');
+    window.scrollTo(0,0);
+  }
+  tabs.forEach(function(b){ b.addEventListener('click', function(){ showTab(b.dataset.tab); }); });
+  document.getElementById('r-goto-form').addEventListener('click', function(){ showTab('form'); });
+
+  /* ================= PÁGINA 1 ================= */
+  function renderTurma(){
+    var n = TURMA.length;
+    var idades = TURMA.map(function(d){return d.idade;});
+    var alturas = TURMA.map(function(d){return d.altura;});
+    var pesos = TURMA.map(function(d){return d.peso;});
+    var imcs = TURMA.map(function(d){return d.imc;});
+    var tmbs = TURMA.map(function(d){return d.tmb;});
+
+    document.getElementById('t-n').textContent = n;
+    document.getElementById('t-idade-range').textContent = Math.min.apply(null,idades)+'–'+Math.max.apply(null,idades);
+
+    var cardsData = [
+      {label:'Idade média', value: fmt(mean(idades),1), unit:'anos', accent:'var(--teal)'},
+      {label:'Altura média', value: fmt(mean(alturas),1), unit:'cm', accent:'var(--teal)'},
+      {label:'Peso médio', value: fmt(mean(pesos),1), unit:'kg', accent:'var(--amber)'},
+      {label:'IMC médio', value: fmt(mean(imcs),1), unit:'', accent:'var(--amber)'},
+      {label:'Gêneros', value: TURMA.filter(function(d){return d.genero==='M';}).length+'M / '+TURMA.filter(function(d){return d.genero==='F';}).length+'F', unit:'', accent:'var(--brick)'}
+    ];
+    var cardsEl = document.getElementById('t-cards');
+    cardsEl.innerHTML = cardsData.map(function(c){
+      return '<div class="card" style="--accent:'+c.accent+'"><span class="num stat-value">'+c.value+'</span><span class="stat-unit">'+c.unit+'</span><div class="stat-label">'+c.label+'</div></div>';
+    }).join('');
+
+    /* IMC classification bar chart */
+    var counts = {};
+    imcs.forEach(function(v){ var b=classifyIMC(v).label; counts[b]=(counts[b]||0)+1; });
+    var order = ["Abaixo do peso","Peso normal","Sobrepeso","Obesidade I","Obesidade II","Obesidade III"];
+    var maxC = Math.max.apply(null, Object.values(counts).concat([1]));
+    document.getElementById('t-imc-chart').innerHTML = order.filter(function(l){return counts[l];}).map(function(l){
+      var c = counts[l]; var band = IMC_BANDS.filter(function(b){return b.label===l;})[0];
+      return '<div class="bar-row"><span class="lbl">'+l+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(c/maxC*100)+'%;background:'+band.color+'"></div></div><span class="val">'+c+'</span></div>';
+    }).join('');
+
+    /* histogram helper */
+    function histogram(values, binSize, unit, containerId){
+      var lo = Math.floor(Math.min.apply(null,values)/binSize)*binSize;
+      var hi = Math.ceil(Math.max.apply(null,values)/binSize)*binSize;
+      var bins = [];
+      for(var b=lo;b<hi;b+=binSize){ bins.push({from:b,to:b+binSize,count:0}); }
+      values.forEach(function(v){
+        var idx = Math.min(Math.floor((v-lo)/binSize), bins.length-1);
+        bins[idx].count++;
+      });
+      var maxC = Math.max.apply(null, bins.map(function(b){return b.count;}).concat([1]));
+      document.getElementById(containerId).innerHTML = bins.filter(function(b){return b.count>0;}).map(function(b){
+        return '<div class="bar-row"><span class="lbl">'+b.from+'–'+b.to+' '+unit+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(b.count/maxC*100)+'%"></div></div><span class="val">'+b.count+'</span></div>';
+      }).join('');
+    }
+    histogram(alturas, 10, 'cm', 't-altura-chart');
+    histogram(pesos, 10, 'kg', 't-peso-chart');
+
+    /* stat table */
+    var rows = [
+      {n:'Idade', a:idades, u:'anos', d:0},
+      {n:'Altura', a:alturas, u:'cm', d:1},
+      {n:'Peso', a:pesos, u:'kg', d:1},
+      {n:'IMC', a:imcs, u:'', d:1},
+      {n:'TMB', a:tmbs, u:'kcal', d:0}
+    ];
+    document.getElementById('t-stat-table').innerHTML =
+      '<tr><th>Métrica</th><th>Média</th><th>Mediana</th><th>Desvio-padrão</th><th>Mín.</th><th>Máx.</th></tr>' +
+      rows.map(function(r){
+        return '<tr><td>'+r.n+' '+(r.u?'('+r.u+')':'')+'</td><td>'+fmt(mean(r.a),r.d)+'</td><td>'+fmt(median(r.a),r.d)+'</td><td>'+fmt(stdev(r.a),r.d)+'</td><td>'+fmt(Math.min.apply(null,r.a),r.d)+'</td><td>'+fmt(Math.max.apply(null,r.a),r.d)+'</td></tr>';
+      }).join('');
+
+    document.getElementById('t-tmb-cards').innerHTML =
+      '<div class="card" style="--accent:var(--amber)"><span class="num stat-value">'+fmt(mean(tmbs),0)+'</span><span class="stat-unit">kcal/dia</span><div class="stat-label">TMB média da turma</div></div>' +
+      '<div class="card" style="--accent:var(--brick)"><span class="num stat-value">'+fmt(stdev(tmbs),0)+'</span><span class="stat-unit">kcal</span><div class="stat-label">Variação (desvio-padrão)</div></div>';
+  }
+  renderTurma();
+
+  /* ================= PÁGINA 2 — FORM ================= */
+  var sexoSel = null;
+  document.querySelectorAll('#f-sexo button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#f-sexo button').forEach(function(b){ b.classList.remove('sel'); });
+      btn.classList.add('sel'); sexoSel = btn.dataset.v;
+    });
+  });
+
+  var lastResult = null;
+
+  function ageFromBirthdate(iso){
+    var b = new Date(iso+'T00:00:00');
+    var t = new Date();
+    var age = t.getFullYear() - b.getFullYear();
+    var m = t.getMonth() - b.getMonth();
+    if(m < 0 || (m===0 && t.getDate() < b.getDate())) age--;
+    return age;
+  }
+
+  document.getElementById('visit-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var msg = document.getElementById('f-msg');
+    var nasc = document.getElementById('f-nasc').value;
+    var altura = parseFloat(document.getElementById('f-altura').value);
+    var peso = parseFloat(document.getElementById('f-peso').value);
+    if(!nasc || !altura || !peso || !sexoSel){
+      msg.textContent = 'Preencha data de nascimento, altura, peso e selecione o sexo.';
+      return;
+    }
+    var idade = ageFromBirthdate(nasc);
+    if(idade < 0 || idade > 110){ msg.textContent = 'Data de nascimento inválida.'; return; }
+    msg.textContent = '';
+
+    var alturaM = altura/100;
+    var imc = peso/(alturaM*alturaM);
+    var tmb = sexoSel==='M'
+      ? 10*peso + 6.25*altura - 5*idade + 5
+      : 10*peso + 6.25*altura - 5*idade - 161;
+
+    lastResult = {idade:idade, altura:altura, peso:peso, genero:sexoSel, imc:imc, tmb:tmb};
+    saveVisitorLocal(lastResult);
+    renderResult();
+    showTab('result');
+    document.getElementById('visit-form').reset();
+    document.querySelectorAll('#f-sexo button').forEach(function(b){ b.classList.remove('sel'); });
+    sexoSel = null;
+  });
+
+  /* ================= PÁGINA 3 — RESULTADOS ================= */
+  function renderResult(){
+    if(!lastResult){
+      document.getElementById('r-empty').style.display = '';
+      document.getElementById('r-content').style.display = 'none';
+      document.getElementById('r-sub').textContent = 'Preencha a aba anterior para ver seus resultados aqui.';
+      return;
+    }
+    document.getElementById('r-empty').style.display = 'none';
+    document.getElementById('r-content').style.display = '';
+    document.getElementById('r-sub').textContent = 'Calculado a partir dos dados que você informou — nada foi enviado para fora deste navegador.';
+
+    var r = lastResult;
+    document.getElementById('r-idade').textContent = r.idade+' anos';
+    document.getElementById('r-altura').textContent = fmt(r.altura,1)+' cm';
+    document.getElementById('r-peso').textContent = fmt(r.peso,1)+' kg';
+
+    var band = classifyIMC(r.imc);
+    document.getElementById('r-imc').textContent = fmt(r.imc,1);
+    var classEl = document.getElementById('r-imc-class');
+    classEl.textContent = band.label;
+    classEl.style.background = band.color.replace('var(--teal)','var(--teal-soft)').indexOf('soft')>-1?band.color:'';
+    classEl.style.color = '#fff'; classEl.style.background = band.color;
+
+    /* gauge band 14..40 */
+    var lo=14, hi=40;
+    var stops = [18.5,25,30,35,40];
+    var prevPct = 0;
+    var segs = [];
+    var colors = ['var(--amber)','var(--teal)','var(--amber)','var(--brick)','var(--brick)','var(--brick)'];
+    var bounds = [lo].concat(stops).concat([hi]);
+    for(var i=0;i<bounds.length-1;i++){
+      var w = (Math.min(bounds[i+1],hi)-bounds[i])/(hi-lo)*100;
+      if(w<=0) continue;
+      segs.push('<div style="width:'+w+'%;background:'+colors[Math.min(i,colors.length-1)]+'"></div>');
+    }
+    document.getElementById('r-band').innerHTML = segs.join('');
+    var pct = Math.max(0,Math.min(1,(r.imc-lo)/(hi-lo)))*100;
+    document.getElementById('r-marker').innerHTML = '<div class="tri" style="left:'+pct+'%"></div>';
+
+    document.getElementById('r-tmb').textContent = fmt(r.tmb,0);
+
+    /* comparison vs turma */
+    var turmaAvg = {
+      altura: mean(TURMA.map(function(d){return d.altura;})),
+      peso: mean(TURMA.map(function(d){return d.peso;})),
+      imc: mean(TURMA.map(function(d){return d.imc;})),
+      tmb: mean(TURMA.map(function(d){return d.tmb;}))
+    };
+    var cmpDefs = [
+      {k:'altura', label:'Altura', unit:'cm', d:1},
+      {k:'peso', label:'Peso', unit:'kg', d:1},
+      {k:'imc', label:'IMC', unit:'', d:1},
+      {k:'tmb', label:'TMB', unit:'kcal', d:0}
+    ];
+    document.getElementById('r-cmp').innerHTML = cmpDefs.map(function(c){
+      var you = r[c.k], cls = turmaAvg[c.k];
+      var max = Math.max(you,cls)*1.15;
+      return '<div class="cmp-card"><div class="cmp-label">'+c.label+' ('+c.unit+')</div><div class="cmp-bars">'+
+        '<div class="cmp-line"><span>Você</span><div class="cmp-track"><div class="cmp-fill" style="width:'+(you/max*100)+'%;background:var(--teal)"></div></div><span>'+fmt(you,c.d)+'</span></div>'+
+        '<div class="cmp-line"><span>Turma</span><div class="cmp-track"><div class="cmp-fill" style="width:'+(cls/max*100)+'%;background:var(--ink-soft)"></div></div><span>'+fmt(cls,c.d)+'</span></div>'+
+        '</div></div>';
+    }).join('');
+
+    renderVisitorStats();
+  }
+
+  /* ---------- visitor local storage (this browser only, no PII) ---------- */
+  var LS_KEY = 'ppi_visitantes_anon_v1';
+  function loadVisitors(){
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch(e){ return []; }
+  }
+  function saveVisitorLocal(r){
+    try {
+      var list = loadVisitors();
+      list.push({idade:r.idade, altura:r.altura, peso:r.peso, genero:r.genero, imc:Math.round(r.imc*100)/100, tmb:Math.round(r.tmb)});
+      localStorage.setItem(LS_KEY, JSON.stringify(list));
+    } catch(e){ /* storage indisponível — segue sem persistir */ }
+  }
+  function renderVisitorStats(){
+    var list = loadVisitors();
+    var el = document.getElementById('r-visitor-stats');
+    if(!list.length){ el.innerHTML = '<span class="vs">Você é o primeiro registro neste navegador.</span>'; return; }
+    el.innerHTML =
+      '<span class="vs"><b>'+list.length+'</b> visitantes</span>'+
+      '<span class="vs">IMC médio <b>'+fmt(mean(list.map(function(v){return v.imc;})),1)+'</b></span>'+
+      '<span class="vs">TMB média <b>'+fmt(mean(list.map(function(v){return v.tmb;})),0)+'</b> kcal</span>';
+  }
+  document.getElementById('r-clear').addEventListener('click', function(){
+    try { localStorage.removeItem(LS_KEY); } catch(e){}
+    renderVisitorStats();
+  });
+
+  renderResult();
+})();
+</script>
+</body>
+</html>
